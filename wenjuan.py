@@ -39,7 +39,6 @@ class Getdata():
         self.z = []
         data = getyuandata()
         self.data = data[0]
-        print(self.data)
         self.name = data[1]
     def getname(self):
         return self.name
