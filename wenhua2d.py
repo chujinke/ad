@@ -7,7 +7,7 @@ import random
 import  pandas as pd
 
 
-def getyuandata(chengshi):
+def getyuandata(chengshi,z):
     list1 = []
     shouru = []
     xiaofei = []
@@ -22,7 +22,7 @@ def getyuandata(chengshi):
             if sheet2.row_values(i)[8] ==chengshi:
                 shouru.append(sheet2.row_values(i)[5])
                 xiaofei.append(sheet2.row_values(i)[12])
-                zhichuzengfu.append(0.0057)
+                zhichuzengfu.append(z)
 
     return shouru,xiaofei,zhichuzengfu
 class Getdata():
@@ -42,18 +42,22 @@ class Getdata():
         self.x4 = []
         self.y4 = []
 
-        data = getyuandata("A")
+        data = getyuandata("A",0.057)
         self.shouru1 = data[0]
         self.xiaofei1 = data[1]
-        data = getyuandata("B")
+        self.z1 = data[2]
+        data = getyuandata("B",0.066)
         self.shouru2 = data[0]
         self.xiaofei2 = data[1]
-        data = getyuandata("C")
+        self.z2 = data[2]
+        data = getyuandata("C",0.083)
         self.shouru3 = data[0]
         self.xiaofei3 = data[1]
-        data = getyuandata("D")
+        self.z3 = data[2]
+        data = getyuandata("D",0.083)
         self.shouru4 = data[0]
         self.xiaofei4 = data[1]
+        self.z4 = data[2]
 
 
     # def jisuan(self):
@@ -117,19 +121,21 @@ class Getdata():
                 self.y4.append(dic2[self.xiaofei4[i]])
             except:
                 print(i)
-        return self.x1,self.y1,self.x2,self.y2,self.x3,self.y3,self.x4,self.y4
+        return self.x1,self.y1,self.x2,self.y2,self.x3,self.y3,self.x4,self.y4,self.z1,self.z2,self.z3,self.z4
 
 if __name__ == "__main__":
     # 防止中文乱码
     zhfont1 = matplotlib.font_manager.FontProperties(fname='C:\Windows\Fonts\msyh.ttc')
     color  = ["red","green"]
-    ax = plt.figure().add_subplot(111)
+    ax = plt.figure().add_subplot(111, projection='3d')
     data = Getdata().jisuan()
-    ax.scatter( data[0],data[1], c="red",s=5, marker='o',cmap='rainbow')
-    ax.scatter(data[2], data[3], c="green", s=5, marker='o', cmap='rainbow')
-    ax.scatter(data[4], data[5], c="blue", s=5, marker='o', cmap='rainbow')
-    ax.scatter(data[6], data[7], c="yellow", s=5, marker='o', cmap='rainbow')
+    ax.scatter( data[0],data[1],data[8], c="red",s=5, marker='o',cmap='rainbow')
+    ax.scatter(data[2], data[3], data[9],c="green", s=5, marker='o', cmap='rainbow')
+    ax.scatter(data[4], data[5], data[10],c="blue", s=5, marker='o', cmap='rainbow')
+    ax.scatter(data[6], data[7], data[11],c="blue", s=5, marker='o', cmap='rainbow')
     ax.set_xlabel("收入",fontproperties=zhfont1)
     ax.set_ylabel("文化消费",fontproperties=zhfont1)
+    ax.set_zlabel("人均消费支出增幅", fontproperties=zhfont1)
+    ax.legend(["北京", "天津", "河北"], prop=zhfont1, markerfirst=True)
     # 显示图像
     plt.show()
