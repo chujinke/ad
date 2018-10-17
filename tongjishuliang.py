@@ -129,15 +129,15 @@ def genRule(Item, minConf=0.7):
 
 if __name__ == "__main__":
     chengshi = {"A":"北京","B":"天津","C":"石家庄","D":"保定"}
-    item = chengshi["A"]
-    yinsu = "A"
+    yinsu = "D"
+    item = chengshi[yinsu]
     #for item in chengshi:
     dataSet = getyuandata(yinsu)
     result_list = []
     Ck = createC1(dataSet)
     # 循环生成频繁项集合，直至产生空集
     while True:
-        Lk = getLk(dataSet, Ck, 0.35)
+        Lk = getLk(dataSet, Ck, 0.5)
         if not Lk:
             break
         result_list.append(Lk)
