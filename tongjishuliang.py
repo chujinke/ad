@@ -4,7 +4,7 @@ import itertools
 
 support_dic = {}
 
-def getyuandata(chengshi):
+def getyuandata(chengshi,arg_tihao,arg_xuanxiang):
     dicdatas = {}
     ti1 = []
     ti2 = []
@@ -18,7 +18,7 @@ def getyuandata(chengshi):
         for j in range(2,hangshu):
             for z in range(3):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi):
+                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[arg_tihao+1]==arg_xuanxiang):
                     try:
                         ti1[z].append(str(z+12)+sheets.row_values(j)[z+3])
                     except:
@@ -26,7 +26,7 @@ def getyuandata(chengshi):
                         ti1.append(ti)
             for z in range(2):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi):
+                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[arg_tihao+1]==arg_xuanxiang):
                     try:
                         ti2[z].append(str(z+25)+sheets.row_values(j)[z+13])
                     except:
@@ -48,9 +48,9 @@ def getyuandata(chengshi):
     # return dicdatas
 
     zongshuju = ti1 + ti2
+    print(zongshuju)
     # zongshuju.append(ti2)
     # zongshuju.append(ti1)
-    print(ti2[0])
     itemset = []
     for i in range(len(zongshuju[0])):
         itemset1 = []
@@ -119,7 +119,7 @@ def genItem(freqSet, support_dic):
 
 # 输入一个频繁项，根据“置信度”生成规则
 # 采用了递归，对规则树进行剪枝
-def genRule(Item, minConf=0.7):
+def genRule(Item, minConf=0.6):
     if len(Item) >= 2:
         for element in itertools.combinations(list(Item), 1):
             if support_dic[Item] / float(support_dic[Item - frozenset(element)]) >= minConf:
@@ -129,15 +129,15 @@ def genRule(Item, minConf=0.7):
 
 if __name__ == "__main__":
     chengshi = {"A":"北京","B":"天津","C":"石家庄","D":"保定"}
-    yinsu = "D"
+    yinsu = "A"
     item = chengshi[yinsu]
     #for item in chengshi:
-    dataSet = getyuandata(yinsu)
+    dataSet = getyuandata(yinsu,10,"E")
     result_list = []
     Ck = createC1(dataSet)
     # 循环生成频繁项集合，直至产生空集
     while True:
-        Lk = getLk(dataSet, Ck, 0.5)
+        Lk = getLk(dataSet, Ck, 0.35)
         if not Lk:
             break
         result_list.append(Lk)
