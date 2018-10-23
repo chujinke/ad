@@ -139,7 +139,7 @@ def junzhi():
     for i in range(len(shouru)):
         try:
             x_value = x_value + dic1[shouru[i]]
-            y_value = y_value + dic2[shouru[i]]
+            y_value = y_value + dic2[xiaofei[i]]
         except:
             pass
     x_value = int(x_value / len(shouru))
