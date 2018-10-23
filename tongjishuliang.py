@@ -119,7 +119,7 @@ def genItem(freqSet, support_dic):
 
 # 输入一个频繁项，根据“置信度”生成规则
 # 采用了递归，对规则树进行剪枝
-def genRule(Item, minConf=0.6):
+def genRule(Item, minConf=0.7):
     if len(Item) >= 2:
         for element in itertools.combinations(list(Item), 1):
             if support_dic[Item] / float(support_dic[Item - frozenset(element)]) >= minConf:
@@ -129,7 +129,7 @@ def genRule(Item, minConf=0.6):
 
 if __name__ == "__main__":
     chengshi = {"A":"北京","B":"天津","C":"石家庄","D":"保定"}
-    yinsu = "A"
+    yinsu = "C"
     item = chengshi[yinsu]
     #for item in chengshi:
     dataSet = getyuandata(yinsu,10,"E")
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     Ck = createC1(dataSet)
     # 循环生成频繁项集合，直至产生空集
     while True:
-        Lk = getLk(dataSet, Ck, 0.35)
+        Lk = getLk(dataSet, Ck, 0.5)
         if not Lk:
             break
         result_list.append(Lk)
@@ -146,7 +146,8 @@ if __name__ == "__main__":
             break
     # 输出频繁项及其“支持度”
     print(item,":城市成因分析")
-    print(support_dic)
+    a = sorted(support_dic.items(), key=lambda x: x[1],reverse = True)
+    print(a)
     # 输出规则
     genItem(result_list, support_dic)
     print("---"*10)
