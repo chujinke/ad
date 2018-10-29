@@ -1,20 +1,13 @@
 from math import log
+import xlrd
 import operator
 
-
-# 获取数据
-import xlrd
-from numpy import *
-import itertools
-support_dic = {}
-def getyuandata(chengshi):
-    dicdatas = {}
+def getyuanData(chengshi):
     ti1 = []
     ti2 = []
-    yinsutihao = 4
     workbook = xlrd.open_workbook(r'文化问卷\汇总统计表.xlsx')
     sheet_names= workbook.sheet_names() # 获取样本数据
-
+    juece = {"23A":"一次","23B":"两次","23C":"三次","23D":"四次","23E":"四次以上","23F":"不一定"}
     for i in range(6):
         sheets = workbook.sheet_by_name(sheet_names[i])
         hangshu = sheets.nrows
@@ -27,33 +20,30 @@ def getyuandata(chengshi):
                     except:
                         ti.append(str(z+12)+sheets.row_values(j)[z+3])
                         ti1.append(ti)
-            for z in range(2):
+
+            for z in range(4):
                 ti = []
                 if (sheets.row_values(j)[8]==chengshi):
                     try:
-                        ti2[z].append(str(z+25)+sheets.row_values(j)[z+13])
+                        ti2[z].append(str(z+23)+sheets.row_values(j)[z+11])
                     except:
-                        ti.append(str(z+25)+sheets.row_values(j)[z+13])
+                        ti.append(str(z+23)+sheets.row_values(j)[z+11])
                         ti2.append(ti)
-
     zongshuju = ti1 + ti2
-    # zongshuju.append(ti2)
-    # zongshuju.append(ti1)
     itemset = []
     for i in range(len(zongshuju[0])):
         itemset1 = []
         for item in zongshuju:
             itemset1.append(item[i])
-            #print(i,item[i])
-        itemset.append(itemset1)
-    # data = zongshuju[ye-1][tihao-1]# 获取哪一页的哪一题的数据
-    # #计算
-    # dicdata = {}
-    # for item in sorted(list(set(data))):
-    #     dicdata[item] = item + "选项" + str(data.count(item)) + "个占比" + str(round(data.count(item) / len(data) * 100, 2)) + "%"
-    print(itemset)
-    return itemset
 
+        del itemset1[4]
+        cishu = itemset1[3]
+        del itemset1[3]
+        itemset1.append(juece[cishu])
+        del itemset1[3]
+        del itemset1[3]
+        itemset.append(itemset1)
+    return itemset
 
 def calcShannonEnt(dataSet):  # 计算数据的熵(entropy)
     numEntries=len(dataSet)  # 数据条数
@@ -70,15 +60,13 @@ def calcShannonEnt(dataSet):  # 计算数据的熵(entropy)
     return shannonEnt
 
 def createDataSet1():    # 创造示例数据
-    dataSet = [['长', '粗', '男'],
-               ['短', '粗', '男'],
-               ['短', '粗', '男'],
-               ['长', '细', '女'],
-               ['短', '细', '女'],
-               ['短', '粗', '女'],
-               ['长', '粗', '女'],
-               ['长', '粗', '女']]
-    labels = ['头发','声音']  #两个特征
+
+    # 获取数据
+    chengshi = {"A": "北京", "B": "天津", "C": "石家庄", "D": "保定"}
+    yinsu = "C"
+    item = chengshi[yinsu]
+    dataSet = getyuanData(yinsu)
+    labels = ['年龄','文化程度',"收入","主要因素","主要途径"]  #两个特征
     return dataSet,labels
 
 def splitDataSet(dataSet,axis,value): # 按某个特征分类后的数据
@@ -138,14 +126,11 @@ def createTree(dataSet,labels):
 
 
 if __name__=='__main__':
-
-    # 获取数据
-    chengshi = {"A":"北京","B":"天津","C":"石家庄","D":"保定"}
-    yinsu = "C"
-    item = chengshi[yinsu]
-    #for item in chengshi:
-    data = getyuandata(yinsu)
-
-    # 决策树
     dataSet, labels=createDataSet1()  # 创造示列数据
-    print(createTree(dataSet, labels))  # 输出决策树模型结果
+    tree = createTree(dataSet, labels)
+    print(tree)  # 输出决策树模型结果
+
+    import treePlotter as tp
+
+    myTree = tp.retrieveTree(0,tree)
+    tp.createPlot(myTree)
