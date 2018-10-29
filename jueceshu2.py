@@ -14,7 +14,7 @@ def getyuanData(chengshi):
         for j in range(2,hangshu):
             for z in range(3):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi):
+                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
                     try:
                         ti1[z].append(str(z+12)+sheets.row_values(j)[z+3])
                     except:
@@ -23,7 +23,7 @@ def getyuanData(chengshi):
 
             for z in range(4):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi):
+                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
                     try:
                         ti2[z].append(str(z+23)+sheets.row_values(j)[z+11])
                     except:
@@ -66,7 +66,8 @@ def createDataSet1():    # 创造示例数据
     yinsu = "C"
     item = chengshi[yinsu]
     dataSet = getyuanData(yinsu)
-    labels = ['年龄','文化程度',"收入","主要因素","主要途径"]  #两个特征
+    print(dataSet)
+    labels = ['年龄','文化程度',"收入"]  #两个特征
     return dataSet,labels
 
 def splitDataSet(dataSet,axis,value): # 按某个特征分类后的数据
@@ -120,8 +121,7 @@ def createTree(dataSet,labels):
     uniqueVals=set(featValues)
     for value in uniqueVals:
         subLabels=labels[:]
-        myTree[bestFeatLabel][value]=createTree(splitDataSet\
-                            (dataSet,bestFeat,value),subLabels)
+        myTree[bestFeatLabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
     return myTree
 
 

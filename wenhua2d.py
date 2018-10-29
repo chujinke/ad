@@ -147,6 +147,33 @@ def junzhi():
     x.append(x_value)
     y.append(y_value)
     return x,y
+
+# def chengshijunzhi():
+#     dic0 = ["A","B","C","D"]
+#     for item in dic0:
+#         shouru = []
+#         xiaofei = []
+#         data = getyuandata(item, 0.057)
+#         shouru += data[0]
+#         xiaofei += data[1]
+#         print(len(shouru))
+#         x,y = [],[]
+#         x_value = 0
+#         y_value = 0
+#         dic1 = {"A":1000,"B":3000,"C":4000,"D":7000,"E":10000,"F":15000}
+#         dic2 = {"A": 100, "B": 300, "C": 800, "D": 1500, "E": 2000}
+#         for i in range(len(shouru)):
+#             try:
+#                 x_value = x_value + dic1[shouru[i]]
+#                 y_value = y_value + dic2[xiaofei[i]]
+#             except:
+#                 pass
+#         x_value = int(x_value / len(shouru))
+#         y_value = int(y_value / len(shouru))
+#         x.append(x_value)
+#         y.append(y_value)
+#         print(item,x,y)
+
 if __name__ == "__main__":
     # 防止中文乱码
     junzhi()
@@ -156,13 +183,19 @@ if __name__ == "__main__":
     data = Getdata().jisuan()
     #ax.scatter( data[0],data[1], c="red",s=5, marker='o',cmap='rainbow')
     #ax.scatter(data[2], data[3],c="green", s=5, marker='o', cmap='rainbow')
-    #ax.scatter(data[4], data[5],c="blue", s=5, marker='o', cmap='rainbow')
-    ax.scatter(data[6], data[7],c="black", s=5, marker='o', cmap='rainbow')
+    ax.scatter(data[4], data[5],c="blue", s=5, marker='o', cmap='rainbow')
+    #ax.scatter(data[6], data[7],c="black", s=5, marker='o', cmap='rainbow')
+
     #ax.scatter(data[4]+data[6], data[5]+data[7], c="blue", s=5, marker='o', cmap='rainbow') #河北省
-    ax.scatter(junzhi()[0], junzhi()[1], c="orange", s=100, marker='*', cmap='rainbow') #均值
+    ax.scatter(junzhi()[0], junzhi()[1], c="orange", s=100, marker='*', cmap='rainbow') #总的均值
+    ax.scatter([8000],[510], c="red", s=100, marker='*', cmap='rainbow')  # 北京均值
+    ax.scatter([3964],[448], c="green", s=100, marker='*', cmap='rainbow')  # 天津均值
+    ax.scatter([4165], [420], c="blue", s=100, marker='*', cmap='rainbow')  # 石家庄均值
+    ax.scatter([2615],[367], c="black", s=100, marker='*', cmap='rainbow')  # 保定均值
+
     ax.set_xlabel("收入",fontproperties=zhfont1)
     ax.set_ylabel("文化消费",fontproperties=zhfont1)
-    ax.legend(["保定","均值"], prop=zhfont1, markerfirst=True)
+    ax.legend(["石家庄","均值","北京均值","天津均值","石家庄均值","保定均值"], prop=zhfont1, markerfirst=True)
     ax.set_xlim([0, 16000])
     ax.set_ylim([0, 2000])
     # 显示图像
