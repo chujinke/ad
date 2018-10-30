@@ -8,6 +8,7 @@ def getyuanData(chengshi):
     workbook = xlrd.open_workbook(r'文化问卷\汇总统计表.xlsx')
     sheet_names= workbook.sheet_names() # 获取样本数据
     juece = {"23A":"一次","23B":"两次","23C":"三次","23D":"四次","23E":"四次以上","23F":"不一定"}
+
     for i in range(6):
         sheets = workbook.sheet_by_name(sheet_names[i])
         hangshu = sheets.nrows
@@ -63,7 +64,7 @@ def createDataSet1():    # 创造示例数据
 
     # 获取数据
     chengshi = {"A": "北京", "B": "天津", "C": "石家庄", "D": "保定"}
-    yinsu = "C"
+    yinsu = "D"
     item = chengshi[yinsu]
     dataSet = getyuanData(yinsu)
     print(dataSet)
