@@ -6,31 +6,38 @@ import operator
 import xlrd
 import matplotlib
 
+yinsu = "B"
+
 def getyuanData(chengshi):
     ti1 = []
     ti2 = []
     workbook = xlrd.open_workbook(r'文化问卷\汇总统计表.xlsx')
     sheet_names= workbook.sheet_names() # 获取样本数据
-    juece = {"23A":"一次","23B":"两次","23C":"三次","23D":"四次","23E":"四次以上","23F":"不一定"}
+    juece = {"23A":"1-2次","23B":"1-2次","23C":"3-4次","23D":"3-4次","23E":"4次以上","23F":"不一定"}
+    xingbie = {}
     age = {"12A":"18以上","12B":"18-30岁","12C":"30-40岁","12D":"40-50岁","12E":"50-60岁"}
     wenhua = {"13A": "初中及以下", "13B": "高中及中专", "13C": "本科及大专", "13D": "硕士研究生", "13E": "博士研究生及以上"}
-    shouru = {"14A": "1000", "14B": "3000", "14C": "4000", "14D": "7000", "14E": "10000", "14F":"15000"}
+    shouru = {"14A": "1000", "14B": "3000", "14C": "4000", "14D": "7000", "14E": "10000", "14F":"15000"}#
+    hunyin = {"15A":"未婚","15B":"已婚","15C":"离婚","15D":"丧偶"}#未婚、已婚、离婚、丧偶
+    jiatinggoucheng = {"16A":"有孩子（18岁以上）","16B":"有孩子（18岁以下）","16C":"没有孩子"}
     for i in range(6):
         sheets = workbook.sheet_by_name(sheet_names[i])
         hangshu = sheets.nrows
         for j in range(2,hangshu):
-            for z in range(3):
+            for z in range(6):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                #if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                if (sheets.row_values(j)[8] == chengshi):
                     try:
-                        ti1[z].append(str(z+12)+sheets.row_values(j)[z+3])
+                        ti1[z].append(str(z+11)+sheets.row_values(j)[z+2])
                     except:
-                        ti.append(str(z+12)+sheets.row_values(j)[z+3])
+                        ti.append(str(z+11)+sheets.row_values(j)[z+2])
                         ti1.append(ti)
 
             for z in range(4):
                 ti = []
-                if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                #if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                if (sheets.row_values(j)[8] == chengshi):
                     try:
                         ti2[z].append(str(z+23)+sheets.row_values(j)[z+11])
                     except:
@@ -43,16 +50,20 @@ def getyuanData(chengshi):
         for item in zongshuju:
             itemset1.append(item[i])
 
-        del itemset1[4]
-        cishu = itemset1[3]
-        del itemset1[3]
+        del itemset1[7]
+        cishu = itemset1[6]
+        del itemset1[6]
         itemset1.append(juece[cishu])
+        del itemset1[6]
+        del itemset1[6]
+        del itemset1[0]
+        del itemset1[0]
         del itemset1[3]
-        del itemset1[3]
-        itemset1[0] = age[itemset1[0]]
-        itemset1[1] = wenhua[itemset1[1]]
-        itemset1[2] = shouru[itemset1[2]]
+        itemset1[0] = wenhua[itemset1[0]]
+        itemset1[1] = shouru[itemset1[1]]
+        itemset1[2] = hunyin[itemset1[2]]
         itemset.append(itemset1)
+    print(itemset)
     return itemset
 
 chengshi1 = {"A": "北京", "B": "天津", "C": "石家庄", "D": "保定"}
@@ -62,11 +73,10 @@ def createDataSet():    # 创造示例数据
 
     # 获取数据
     chengshi = {"A": "北京", "B": "天津", "C": "石家庄", "D": "保定"}
-    yinsu = "D"
     item = chengshi[yinsu]
     dataSet = getyuanData(yinsu)
     print(dataSet)
-    labels = ['年龄','文化程度',"收入"]  #两个特征
+    labels = ['文化程度','收入',"家庭结构"]  #两个特征
     return dataSet,labels
 
 
