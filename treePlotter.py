@@ -22,6 +22,7 @@ def getNumLeafs(myTree):
             numLeafs += getNumLeafs(secondDict[key])
         else:
             numLeafs += 1
+
     return numLeafs
 
 
@@ -53,7 +54,7 @@ def createPlot(inTree):
     createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)
     plotTree.totalW = float(getNumLeafs(inTree))
     plotTree.totalD = float(getTreeDepth(inTree))
-    plotTree.xOff = -0.5 / plotTree.totalW;
+    plotTree.xOff = -0.5 / plotTree.totalW
     plotTree.yOff = 1.0
     plotTree(inTree, (0.5, 1.0), '')
     plt.show()
@@ -62,7 +63,7 @@ def createPlot(inTree):
 def plotMidText(cntrPt, parentPt, txtString):
     xMid = (parentPt[0] - cntrPt[0]) / 2.0 + cntrPt[0]
     yMid = (parentPt[1] - cntrPt[1]) / 2.0 + cntrPt[1]
-    createPlot.ax1.text(xMid, yMid, txtString)
+    createPlot.ax1.text(xMid, yMid, txtString,fontproperties=zhfont1)
 
 
 def plotTree(myTree, parentPt, nodeTxt):
