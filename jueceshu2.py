@@ -67,7 +67,6 @@ def createDataSet1():    # 创造示例数据
     yinsu = "D"
     item = chengshi[yinsu]
     dataSet = getyuanData(yinsu)
-    print(dataSet)
     labels = ['年龄','文化程度',"收入"]  #两个特征
     return dataSet,labels
 
