@@ -6,7 +6,7 @@ import xlrd
 import matplotlib
 
 chengshi1 = {"A": "北京", "B": "天津", "C": "石家庄", "D": "保定"}
-yinsu1 = "C"
+yinsu1 = "D"
 item1 = chengshi1[yinsu1]
 def getyuanData(chengshi):
     ti1 = []
@@ -14,6 +14,7 @@ def getyuanData(chengshi):
     workbook = xlrd.open_workbook(r'文化问卷\汇总统计表.xlsx')
     sheet_names= workbook.sheet_names() # 获取样本数据
     juece = {"23A":"1-2次","23B":"1-2次","23C":"3-4次","23D":"3-4次","23E":"4次以上","23F":"不一定"}
+    juece1 = { "24A": "1000以下", "24B": "1000以下","24C": "1000以下", "24D": "1000以上", "24E": "1000以上"}
     age = {"12A":"18以上","12B":"18-30岁","12C":"30-40岁","12D":"40-50岁","12E":"50-60岁"}
     wenhua = {"13A": "初中及以下", "13B": "高中及中专", "13C": "本科及大专", "13D": "硕士研究生", "13E": "博士研究生及以上"}
     shouru = {"14A": "1000", "14B": "3000", "14C": "4000", "14D": "7000", "14E": "10000", "14F":"15000"}
@@ -23,7 +24,7 @@ def getyuanData(chengshi):
         for j in range(2,hangshu):
             for z in range(6):
                 ti = []
-                #if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                #if (sheets.row_values(j)[8]==chengshi and (sheets.row_values(j)[12]=="D" or sheets.row_values(j)[12]=="E")):
                 if (sheets.row_values(j)[8] == chengshi):
                     try:
                         ti1[z].append(str(z+11)+sheets.row_values(j)[z+2])
@@ -33,7 +34,7 @@ def getyuanData(chengshi):
 
             for z in range(4):
                 ti = []
-                #if (sheets.row_values(j)[8]==chengshi and sheets.row_values(j)[11]!="F"):
+                #if (sheets.row_values(j)[8]==chengshi and (sheets.row_values(j)[12]=="D" or sheets.row_values(j)[12]=="E")):
                 if (sheets.row_values(j)[8] == chengshi):
                     try:
                         ti2[z].append(str(z+23)+sheets.row_values(j)[z+11])
@@ -47,16 +48,17 @@ def getyuanData(chengshi):
         for item in zongshuju:
             itemset1.append(item[i])
 
-        del itemset1[7]
+        del itemset1[6]
         cishu = itemset1[6]
         del itemset1[6]
-        itemset1.append(juece[cishu])
+        itemset1.append(juece1[cishu])
         del itemset1[6]
         del itemset1[6]
         # itemset1[3] = age[itemset1[]]
         # itemset1[1] = wenhua[itemset1[1]]
         # itemset1[2] = shouru[itemset1[2]]
         itemset.append(itemset1)
+    print(itemset)
     return itemset
 
 
